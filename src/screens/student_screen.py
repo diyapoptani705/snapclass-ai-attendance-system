@@ -7,7 +7,6 @@ from src.components.footer import footer_dashboard
 from PIL import Image
 import numpy as np
 from src.pipelines.face_pipeline import predict_attendance, get_face_embeddings, train_classifier
-from src.pipelines.voice_pipeline import get_voice_embedding
 from src.database.db import get_all_students, create_student, get_student_subjects, get_student_attendance, unenroll_student_to_subject
 import time
 
@@ -144,16 +143,6 @@ def student_screen():
             st.header('Register new Profile')
             new_name = st.text_input("Enter your name", placeholder='E.g. Hamza Rizvi')
 
-            st.subheader('Optional : Voice Enrollment')
-            st.info("Enroll your for voice only attendance")
-
-
-            audio_data = None
-
-            try:
-                audio_data = st.audio_input('Record a short phrase like I am present, My name is Akash.')
-            except Exception:
-                st.error('Audio Data failed!')
 
             if st.button('Create Account', type='primary'):
                 if new_name:
@@ -163,11 +152,8 @@ def student_screen():
                         if encodings:
                             face_emb = encodings[0].tolist()
 
-                            voice_emb = None
-                            if audio_data:
-                                voice_emb = get_voice_embedding(audio_data.read())
 
-                            response_data = create_student(new_name, face_embedding=face_emb, voice_embedding=voice_emb)
+                            response_data = create_student(new_name, face_embedding=face_emb)
 
                             if response_data:
                                 train_classifier()

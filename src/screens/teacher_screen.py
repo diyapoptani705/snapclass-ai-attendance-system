@@ -21,7 +21,7 @@ import pandas as pd
 from src.database.config import supabase
 
 
-from src.components.dialog_voice_attendance import voice_attendance_dialog
+
 def teacher_screen():
 
     style_background_dashboard()
@@ -128,7 +128,7 @@ def teacher_tab_take_attendance():
             with gallery_cols[idx % 4 ]:
                 st.image(img, width='stretch', caption=f'Photo {idx+1}')
     has_photos = bool(st.session_state.attendance_images)
-    c1, c2, c3 = st.columns(3)
+    c1, c2 = st.columns(2, gap='large')
 
     with c1:
         if st.button('Clear all photos', width='stretch', type='tertiary', icon=':material/delete:', disabled=not has_photos):
@@ -186,9 +186,6 @@ def teacher_tab_take_attendance():
 
                 attendance_result_dialog(pd.DataFrame(results), attendance_to_log)
 
-    with c3:
-        if st.button('Use Voice Attendance', type='primary', width='stretch', icon=':material/mic:'):
-            voice_attendance_dialog(selected_subject_id)
 
 
 
